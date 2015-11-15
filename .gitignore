@@ -1,0 +1,9 @@
+Main/Library
+Main/UnityVS
+Main/Temp
+Main/Main-csharp.sln.ide
+Main/UnityVS.Main.sln.ide
+*.csproj
+*.unityproj
+*.sln
+*.suo
