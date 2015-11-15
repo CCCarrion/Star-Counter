@@ -1,9 +1,10 @@
-Main/Library
-Main/UnityVS
-Main/Temp
-Main/Main-csharp.sln.ide
-Main/UnityVS.Main.sln.ide
+UnityProject/Library
+UnityProject/UnityVS
+UnityProject/Temp
+UnityProject/Main-csharp.sln.ide
+UnityProject/UnityVS.Main.sln.ide
 *.csproj
 *.unityproj
 *.sln
 *.suo
+*.userprefs
