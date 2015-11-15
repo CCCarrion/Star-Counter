@@ -3,6 +3,8 @@ UnityProject/UnityVS
 UnityProject/Temp
 UnityProject/Main-csharp.sln.ide
 UnityProject/UnityVS.Main.sln.ide
+UnityProject/Assets/NGUI/Examples
+UnityProject/Assets/NGUI/Examples.meta
 *.csproj
 *.unityproj
 *.sln
