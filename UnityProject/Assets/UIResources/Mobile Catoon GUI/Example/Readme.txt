@@ -1,0 +1,1 @@
+Please import NGUI 3.4.9(or later) before you unpack “NGUI Example.unitypackage”.

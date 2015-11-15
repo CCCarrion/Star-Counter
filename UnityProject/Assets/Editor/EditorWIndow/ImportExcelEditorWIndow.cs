@@ -5,11 +5,11 @@ using System.IO;
 using System.Data;
 using System.Collections.Generic;
 using Excel;
-public class ImportExcelEditorWIndow : EditorWindow{
+public class ImportExcelEditorWindow : EditorWindow{
 	[MenuItem ("Star Counter/ImportExcel")]
 	static void Init () {
 		// Get existing open window or if none, make a new one:
-		ImportExcelEditorWIndow window = (ImportExcelEditorWIndow)EditorWindow.GetWindow (typeof (ImportExcelEditorWIndow));
+		ImportExcelEditorWindow window = (ImportExcelEditorWindow)EditorWindow.GetWindow (typeof (ImportExcelEditorWindow));
 	}
 	string dstDirName;
 	string[] excelPaths;
