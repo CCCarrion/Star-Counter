@@ -23,11 +23,11 @@ public class ImportExcelEditorWIndow : EditorWindow{
 			string folderPath=string.Format("{0}/Excel",directoryInfo.Parent.Parent.FullName);
 			excelPaths = Directory.GetFiles (folderPath);
 			foreach (string excelPath in excelPaths) {
-				ExportExcel(excelPath);
+				ImportExcel(excelPath);
 			}
 		}
 	}
-	void ExportExcel(string excelPath){
+	void ImportExcel(string excelPath){
 		FileStream stream = File.Open(excelPath, FileMode.Open, FileAccess.Read);
 		IExcelDataReader excelReader = ExcelReaderFactory.CreateOpenXmlReader(stream);
 		
