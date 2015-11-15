@@ -1,0 +1,23 @@
+id	EN
+1	Hello World
+2	Counting Stars
+3	Star Counter
+4	Welcome to Summoner's Rift
+5	New Game
+6	Continue
+7	Pause
+8	Resume
+9	About Us
+10	Confirm
+11	Cancel
+12	Options
+13	Music
+14	Language
+15	Simplified Chinese
+16	Traditional Chinese
+17	English
+18	Warning
+19	Exception
+20	Error
+21	Upload Save Data
+22	Download Save Data
