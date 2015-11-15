@@ -28,7 +28,12 @@ public class UIManager{
 		}
 	}
 	public UIPanelEntity GetPanel<T>() where T:UIPanelEntity{
-		return panelDictionary [typeof(T)];
+		UIPanelEntity panelEntity;
+		if (panelDictionary.TryGetValue (typeof(T), out panelEntity)) {
+			return panelEntity;
+		}
+		else
+			return null;
 	}
 	public void ShowPanel<T>() where T:UIPanelEntity {
 		UIPanelEntity panelEntity;
@@ -41,6 +46,7 @@ public class UIManager{
 		panelObject.transform.localScale = Vector3.one;
 		panelObject.transform.localPosition = Vector3.zero;
 		panelObject.transform.localRotation = Quaternion.identity;
+		panelObject.name = typeof(T).Name;
 		panelEntity = panelObject.GetComponent<T> ();
 		panelDictionary.Add (typeof(T), panelEntity);
 		UIPanel uiPanel = panelObject.GetComponent<UIPanel> ();
@@ -71,7 +77,7 @@ public class UIManager{
 			Debug.LogWarning(string.Format("{0} has not been loaded",typeof(T).Name));
 		}
 	}
-	public void EnablePanel<T>() where T:UIPanelEntity{
+	public void ActivePanel<T>() where T:UIPanelEntity{
 		UIPanelEntity panelEntity;
 		if (panelDictionary.TryGetValue (typeof(T),out panelEntity)) {
 			panelEntity = panelDictionary [typeof(T)];
@@ -81,7 +87,7 @@ public class UIManager{
 			Debug.LogWarning(string.Format("{0} has not been loaded",typeof(T).Name));
 		}
 	}
-	public void DisablePanel<T>() where T:UIPanelEntity{
+	public void DeactivePanel<T>() where T:UIPanelEntity{
 		UIPanelEntity panelEntity;
 		if (panelDictionary.TryGetValue (typeof(T),out panelEntity)) {
 			panelEntity = panelDictionary [typeof(T)];
