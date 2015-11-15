@@ -11,6 +11,7 @@ public class GameMainLoop : MonoBehaviour {
 	void Start () {
 		//creat singleton
 		UIManager.Instance = new UIManager ();
+		GameDataManager.Instance = new GameDataManager ();
 		UIManager.Instance.ShowPanel<LoginPanel> ();
 	}
 	void OnApplicationPause(bool pause){

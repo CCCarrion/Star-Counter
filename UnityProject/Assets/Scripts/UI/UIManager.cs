@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections.Generic;
 using System;
 public class UIManager{
@@ -7,14 +7,14 @@ public class UIManager{
 		set;
 	}
 	Transform panelParent;
-	Dictionary<Type,UIPanelEntity> panelDictionary;
+	Dictionary<Type,BasePanel> panelDictionary;
 	int curPanelDepth;
 	const int DELTA_DEPTH = 10;
 	public UIManager(){
 		UIRoot uiRoot = GameObject.Find ("UI Root").GetComponent<UIRoot>();
 		panelParent = uiRoot.transform.FindChild ("Camera");
 
-		panelDictionary = new Dictionary<Type, UIPanelEntity> ();
+		panelDictionary = new Dictionary<Type, BasePanel> ();
 		curPanelDepth = 0;
 		//adapt the ui height and width
 		int ManualWidth = uiRoot.manualWidth;
@@ -27,16 +27,16 @@ public class UIManager{
 				uiRoot.manualHeight = ManualHeight;
 		}
 	}
-	public UIPanelEntity GetPanel<T>() where T:UIPanelEntity{
-		UIPanelEntity panelEntity;
+	public BasePanel GetPanel<T>() where T:BasePanel{
+		BasePanel panelEntity;
 		if (panelDictionary.TryGetValue (typeof(T), out panelEntity)) {
 			return panelEntity;
 		}
 		else
 			return null;
 	}
-	public void ShowPanel<T>() where T:UIPanelEntity {
-		UIPanelEntity panelEntity;
+	public void ShowPanel<T>() where T:BasePanel {
+		BasePanel panelEntity;
 		if (panelDictionary.TryGetValue (typeof(T),out panelEntity)) {
 			Debug.LogWarning(string.Format("{0} has been loaded",typeof(T).Name));
 			return;
@@ -64,33 +64,46 @@ public class UIManager{
 		curPanelDepth += DELTA_DEPTH;
 		panelEntity.OnShow ();
 	}
-	public void HidePanel<T>() where T:UIPanelEntity{
-		UIPanelEntity panelEntity;
+	public void HidePanel<T>() where T:BasePanel{
+		BasePanel panelEntity;
 		if (panelDictionary.TryGetValue (typeof(T),out panelEntity)) {
-			panelEntity = panelDictionary [typeof(T)];
-			GameObject.Destroy (panelEntity.gameObject);
 			curPanelDepth -= DELTA_DEPTH;
 			panelEntity.OnHide ();
 			panelDictionary.Remove(typeof(T));
+			GameObject.Destroy (panelEntity.gameObject);
 		}
 		else {
 			Debug.LogWarning(string.Format("{0} has not been loaded",typeof(T).Name));
 		}
+	}	
+	public void HidePanel(BasePanel panelEntity) {
+		if (panelDictionary.ContainsValue(panelEntity)) {
+			curPanelDepth -= DELTA_DEPTH;
+			panelEntity.OnHide ();
+			foreach(Type type in panelDictionary.Keys){
+				if(panelDictionary[type]==panelEntity){
+					panelDictionary.Remove(type);
+					break;
+				}
+			}
+			GameObject.Destroy (panelEntity.gameObject);
+		}
+		else {
+			Debug.LogWarning(string.Format("{0} has not been loaded",panelEntity));
+		}
 	}
-	public void ActivePanel<T>() where T:UIPanelEntity{
-		UIPanelEntity panelEntity;
+	public void ActivePanel<T>() where T:BasePanel{
+		BasePanel panelEntity;
 		if (panelDictionary.TryGetValue (typeof(T),out panelEntity)) {
-			panelEntity = panelDictionary [typeof(T)];
 			panelEntity.gameObject.SetActive (true);
 		}
 		else {
 			Debug.LogWarning(string.Format("{0} has not been loaded",typeof(T).Name));
 		}
 	}
-	public void DeactivePanel<T>() where T:UIPanelEntity{
-		UIPanelEntity panelEntity;
+	public void DeactivePanel<T>() where T:BasePanel{
+		BasePanel panelEntity;
 		if (panelDictionary.TryGetValue (typeof(T),out panelEntity)) {
-			panelEntity = panelDictionary [typeof(T)];
 			panelEntity.gameObject.SetActive (false);
 		}
 		else {

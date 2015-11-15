@@ -5,6 +5,7 @@ UnityProject/Main-csharp.sln.ide
 UnityProject/UnityVS.Main.sln.ide
 UnityProject/Assets/NGUI/Examples
 UnityProject/Assets/NGUI/Examples.meta
+UnityProject/Assets/UnityVS
 *.csproj
 *.unityproj
 *.sln

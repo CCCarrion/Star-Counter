@@ -1,12 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class LoginPanel : UIPanelEntity {
+public class LoginPanel : BasePanel {
 	public override void OnShow ()
 	{
 		EventDelegate.Add (transform.FindChild ("Options").GetComponent<UIEventTrigger> ().onClick, OnClickOptions);
 		EventDelegate.Add (transform.FindChild ("Facebook").GetComponent<UIEventTrigger> ().onClick, OnClickFacebook);
 		EventDelegate.Add (transform.FindChild ("Twitter").GetComponent<UIEventTrigger> ().onClick, OnClickWeibo);
+		EventDelegate.Add (transform.FindChild ("New Game").GetComponent<UIEventTrigger> ().onClick, OnClickNewGame);
+		EventDelegate.Add (transform.FindChild ("Continue").GetComponent<UIEventTrigger> ().onClick, OnClickContinue);
 	}
 	public override void OnHide ()
 	{
@@ -20,5 +22,18 @@ public class LoginPanel : UIPanelEntity {
 	}
 	void OnClickWeibo(){
 		Application.OpenURL ("http://www.weibo.com/wow");
+	}
+	
+	void OnClickNewGame(){
+		ArchiveData data = new ArchiveData ("Fucker", 0);
+		GameDataManager.Instance.Save<ArchiveData>(data);
+		UIManager.Instance.ShowPanel<GamePanel> ();
+		Hide ();
+	}
+	void OnClickContinue(){
+		ArchiveData data = GameDataManager.Instance.Get<ArchiveData> ();
+		Debug.Log ("PlayerName:" + data.playerName + ",UDID:" + data.key);
+		UIManager.Instance.ShowPanel<GamePanel> ();
+		Hide ();
 	}
 }

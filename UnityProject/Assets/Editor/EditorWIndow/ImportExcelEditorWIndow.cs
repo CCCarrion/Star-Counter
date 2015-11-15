@@ -9,7 +9,7 @@ public class ImportExcelEditorWindow : EditorWindow{
 	[MenuItem ("Star Counter/ImportExcel")]
 	static void Init () {
 		// Get existing open window or if none, make a new one:
-		ImportExcelEditorWindow window = (ImportExcelEditorWindow)EditorWindow.GetWindow (typeof (ImportExcelEditorWindow));
+		EditorWindow.GetWindow (typeof (ImportExcelEditorWindow));
 	}
 	string dstDirName;
 	string[] excelPaths;
