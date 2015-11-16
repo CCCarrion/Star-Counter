@@ -10,7 +10,7 @@ using System.Security.Cryptography;
 /// 保存数据的类，其他的类需要继承这个DataBase类。
 /// DataBase,the class to save data.The other class should inherit the DataBase class.
 /// 继承自DataBase的类，必须有无参的构造函数，用于第一次保存Data时设置一些默认值。
-/// The other class inherited from DataBase should contain a no-argument constructor,in order to set some default value when save the Data first time.
+/// The other class inherited from DataBase should contain a no-argument constructor,in order to set some default value when save the Data at the first time.
 /// </summary>
 public abstract class DataBase
 {
@@ -43,8 +43,12 @@ public class GameDataManager
 			return data as T;
 		}
 	}
+	private void Set<T>(T t) where T:DataBase,new(){
+		dataDictionary [typeof(T)] = t;
+	}
 	public void Save<T>(T t) where T:DataBase,new()
 	{
+		Set<T> (t);
 		string dataFileName = typeof(T).Name + ".dat";
 		string gameDataFile = Path.Combine (Application.persistentDataPath, dataFileName);
 		string dataString= xmlSaver.SerializeObject(t,typeof(T));
