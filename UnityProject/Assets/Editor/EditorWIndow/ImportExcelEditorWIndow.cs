@@ -23,7 +23,9 @@ public class ImportExcelEditorWindow : EditorWindow{
 			string folderPath=string.Format("{0}/Excel",directoryInfo.Parent.Parent.FullName);
 			excelPaths = Directory.GetFiles (folderPath);
 			foreach (string excelPath in excelPaths) {
-				ImportExcel(excelPath);
+				if(excelPath.IndexOf(".xlsx")!=-1){
+					ImportExcel(excelPath);
+				}
 			}
 		}
 	}

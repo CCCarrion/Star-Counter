@@ -28,18 +28,18 @@ public class UIManager{
 		}
 	}
 	public BasePanel GetPanel<T>() where T:BasePanel{
-		BasePanel panelEntity;
-		if (panelDictionary.TryGetValue (typeof(T), out panelEntity)) {
-			return panelEntity;
+		BasePanel basePanel;
+		if (panelDictionary.TryGetValue (typeof(T), out basePanel)) {
+			return basePanel;
 		}
 		else
 			return null;
 	}
-	public void ShowPanel<T>() where T:BasePanel {
-		BasePanel panelEntity;
-		if (panelDictionary.TryGetValue (typeof(T),out panelEntity)) {
+	public BasePanel ShowPanel<T>() where T:BasePanel {
+		BasePanel basePanel;
+		if (panelDictionary.TryGetValue (typeof(T),out basePanel)) {
 			Debug.LogWarning(string.Format("{0} has been loaded",typeof(T).Name));
-			return;
+			return basePanel;
 		}
 		GameObject panelObject = GameObject.Instantiate (Resources.Load (string.Format ("UI/Panels/{0}", typeof(T).Name))) as GameObject;
 		panelObject.transform.SetParent (panelParent);
@@ -47,67 +47,82 @@ public class UIManager{
 		panelObject.transform.localPosition = Vector3.zero;
 		panelObject.transform.localRotation = Quaternion.identity;
 		panelObject.name = typeof(T).Name;
-		panelEntity = panelObject.GetComponent<T> ();
-		panelDictionary.Add (typeof(T), panelEntity);
+		basePanel = panelObject.GetComponent<T> ();
+		panelDictionary.Add (typeof(T), basePanel);
 		UIPanel uiPanel = panelObject.GetComponent<UIPanel> ();
 
-		UIPanel[] panels = panelEntity.transform.GetComponentsInChildren<UIPanel> (true);
+		UIPanel[] panels = basePanel.transform.GetComponentsInChildren<UIPanel> (true);
 		for(int i=0;i<panels.Length;i++){
 			if(panels[i].depth<DELTA_DEPTH){
 				panels[i].depth+=curPanelDepth;
 			}
 			else {
-				Debug.LogWarning(string.Format("{0}/{1},depth out of range!reset it!",panelEntity.name,panels[i].name));
+				Debug.LogWarning(string.Format("{0}/{1},depth out of range!reset it!",basePanel.name,panels[i].name));
 			}
 		}
 		uiPanel.depth = curPanelDepth;
 		curPanelDepth += DELTA_DEPTH;
-		panelEntity.OnShow ();
+		basePanel.OnShow ();
+		return basePanel;
 	}
 	public void HidePanel<T>() where T:BasePanel{
-		BasePanel panelEntity;
-		if (panelDictionary.TryGetValue (typeof(T),out panelEntity)) {
+		BasePanel basePanel;
+		if (panelDictionary.TryGetValue (typeof(T),out basePanel)) {
 			curPanelDepth -= DELTA_DEPTH;
-			panelEntity.OnHide ();
+			basePanel.OnHide ();
 			panelDictionary.Remove(typeof(T));
-			GameObject.Destroy (panelEntity.gameObject);
+			GameObject.Destroy (basePanel.gameObject);
 		}
 		else {
 			Debug.LogWarning(string.Format("{0} has not been loaded",typeof(T).Name));
 		}
 	}	
-	public void HidePanel(BasePanel panelEntity) {
-		if (panelDictionary.ContainsValue(panelEntity)) {
+	public void HidePanel(BasePanel basePanel) {
+		if (panelDictionary.ContainsValue(basePanel)) {
 			curPanelDepth -= DELTA_DEPTH;
-			panelEntity.OnHide ();
+			basePanel.OnHide ();
 			foreach(Type type in panelDictionary.Keys){
-				if(panelDictionary[type]==panelEntity){
+				if(panelDictionary[type]==basePanel){
 					panelDictionary.Remove(type);
 					break;
 				}
 			}
-			GameObject.Destroy (panelEntity.gameObject);
+			GameObject.Destroy (basePanel.gameObject);
 		}
 		else {
-			Debug.LogWarning(string.Format("{0} has not been loaded",panelEntity));
+			Debug.LogWarning(string.Format("{0} has not been loaded",basePanel));
 		}
 	}
 	public void ActivePanel<T>() where T:BasePanel{
-		BasePanel panelEntity;
-		if (panelDictionary.TryGetValue (typeof(T),out panelEntity)) {
-			panelEntity.gameObject.SetActive (true);
+		BasePanel basePanel;
+		if (panelDictionary.TryGetValue (typeof(T),out basePanel)) {
+			basePanel.gameObject.SetActive (true);
 		}
 		else {
 			Debug.LogWarning(string.Format("{0} has not been loaded",typeof(T).Name));
 		}
 	}
 	public void DeactivePanel<T>() where T:BasePanel{
-		BasePanel panelEntity;
-		if (panelDictionary.TryGetValue (typeof(T),out panelEntity)) {
-			panelEntity.gameObject.SetActive (false);
+		BasePanel basePanel;
+		if (panelDictionary.TryGetValue (typeof(T),out basePanel)) {
+			basePanel.gameObject.SetActive (false);
 		}
 		else {
 			Debug.LogWarning(string.Format("{0} has not been loaded",typeof(T).Name));
 		}
+	}
+	//TODO:The first argument should be replaced by "int wordId" in the new version.
+	public MessageBoxPanel ShowOKCancel(string message,Action onClickOKCallback,Action onClickCancelCallback){
+		MessageBoxPanel messageBoxPanel = ShowPanel<MessageBoxPanel> () as MessageBoxPanel;
+		messageBoxPanel.OnClickOKCallback = onClickOKCallback;
+		messageBoxPanel.OnClickCancelCallback = onClickCancelCallback;
+		messageBoxPanel.SetMessageAndType (message, MessageBoxType.OKCancel);
+		return messageBoxPanel;
+	}
+	public MessageBoxPanel ShowOK(string message,Action onClickOKCallback){
+		MessageBoxPanel messageBoxPanel = ShowPanel<MessageBoxPanel> () as MessageBoxPanel;
+		messageBoxPanel.OnClickOKCallback = onClickOKCallback;
+		messageBoxPanel.SetMessageAndType (message, MessageBoxType.OK);
+		return messageBoxPanel;
 	}
 }
