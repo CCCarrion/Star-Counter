@@ -7,9 +7,10 @@ UnityProject/Assets/NGUI/Examples
 UnityProject/Assets/NGUI/Examples.meta
 UnityProject/Assets/UnityVS
 UnityProject/Assets/UnityVS.meta
+UnityProject/obj
+
 *.csproj
 *.unityproj
 *.sln
 *.suo
 *.userprefs
-*.avi
