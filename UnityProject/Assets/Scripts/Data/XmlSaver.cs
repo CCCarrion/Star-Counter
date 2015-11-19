@@ -63,10 +63,10 @@ public class XmlSaver
 
 	public void CreateXML(string fileName,string thisData)
 	{
-		string xxx = Encrypt(thisData);
+        string dataString = Encrypt(thisData);
 		StreamWriter writer;
 		writer = File.CreateText(fileName);
-		writer.Write(xxx);
+        writer.Write(dataString);
 		writer.Close();
 	}
 
@@ -75,8 +75,8 @@ public class XmlSaver
 		StreamReader sReader = File.OpenText(fileName);
 		string dataString = sReader.ReadToEnd();
 		sReader.Close();
-		string xxx = Decrypt(dataString);
-		return xxx;
+        dataString = Decrypt(dataString);
+        return dataString;
 	}
 	public string UTF8ByteArrayToString(byte[] characters  )
 	{    
